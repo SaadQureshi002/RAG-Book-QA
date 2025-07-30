@@ -5,7 +5,7 @@ A sophisticated full-stack application that enables intelligent document analysi
 ## 🏗️ Project Structure
 
 ```
-pdf-owl/
+rag-multiple-document/
 ├── frontend/                 # React + Vite frontend
 │   ├── src/
 │   │   ├── App.jsx          # Main application component
