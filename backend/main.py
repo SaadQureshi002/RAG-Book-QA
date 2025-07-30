@@ -77,7 +77,7 @@ async def startup():
 @app.get("/")
 async def root():
     """Health check endpoint."""
-    return {"message": "PDF Owl API is running", "status": "healthy"}
+    return {"message": "PDF API is running", "status": "healthy"}
 
 @app.post("/api/upload")
 async def upload_document(file: UploadFile = File(...)):

@@ -45,8 +45,8 @@ Make sure you have installed:
 1. **Create the main project directory:**
 
    ```bash
-   mkdir pdf-owl
-   cd pdf-owl
+   mkdir documind
+   cd documind
    ```
 
 2. **Create frontend and backend directories:**
