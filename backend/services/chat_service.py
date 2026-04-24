@@ -24,7 +24,7 @@ class ChatService:
         else:
             try:
                 self.llm = ChatGoogleGenerativeAI(
-                    model="gemini-1.5-flash",
+                    model="gemini-flash-latest",
                     google_api_key=self.api_key,
                     temperature=0.7
                 )
@@ -93,8 +93,8 @@ Please provide a helpful, accurate response based on the document context. If th
             response = await self.llm.ainvoke(prompt)
             return response.content
         except Exception as e:
-            logger.error(f"Error generating LLM response: {e}")
-            return "I apologize, but I'm having trouble generating a response right now. Please try again."
+            logger.error(f"Error generating LLM response: {e}", exc_info=True)
+            return f"I apologize, but I'm having trouble generating a response right now. Error: {str(e)}"
     
     def _generate_fallback_response(self, message: str, filename: str) -> str:
         """Generate a fallback response when LLM is not available."""

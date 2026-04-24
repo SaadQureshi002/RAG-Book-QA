@@ -23,7 +23,7 @@ class EmbeddingService:
         else:
             try:
                 self.embeddings = GoogleGenerativeAIEmbeddings(
-                    model="models/embedding-001",
+                    model="models/gemini-embedding-001",
                     google_api_key=self.api_key
                 )
             except Exception as e:

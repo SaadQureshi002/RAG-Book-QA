@@ -1,4 +1,4 @@
-# Python
+# --- Backend (Python) ---
 __pycache__/
 *.py[cod]
 *$py.class
@@ -16,36 +16,37 @@ parts/
 sdist/
 var/
 wheels/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
-
-# Virtual environment
 venv/
-.env/
+ENV/
+env/
+.env
 
-# Node.js
+# --- SQLite Databases ---
+*.db
+*.sqlite3
+
+# --- Vector Indexes ---
+backend/faiss_indexes/
+
+# --- Frontend (Node/React) ---
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+.eslintcache
+.stylelintcache
 
-# IDE
+# --- OS / IDE ---
+.DS_Store
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# Database
-*.db
-*.sqlite
-
-# Logs and temp files
-*.log
-*.tmp
-*.temp
-
-# System files
-.DS_Store
 Thumbs.db
+.gemini/
+.system_generated/

@@ -36,12 +36,17 @@ const axios = {
       headers: isFormData ? {} : { "Content-Type": "application/json" },
       body: isFormData ? data : JSON.stringify(data),
     });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      const error = new Error(`HTTP ${response.status}`);
+      error.detail = errorData.detail || response.statusText;
+      throw error;
+    }
     return { data: await response.json() };
   },
 };
 
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = "";
 
 const DocuMind = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -68,71 +73,32 @@ const DocuMind = () => {
       if (connectionAttempted) return;
       setConnectionAttempted(true);
 
-      try {
-        // Try to check backend connection
-        await axios.get(`${API_BASE_URL}/api/health`);
-        setBackendConnected(true);
+        // Try to check backend connection with retries
+        let connected = false;
+        for (let i = 0; i < 3; i++) {
+          try {
+            await axios.get(`${API_BASE_URL}/api/health`);
+            connected = true;
+            break;
+          } catch (e) {
+            console.warn(`Connection attempt ${i+1} failed...`);
+            await new Promise(r => setTimeout(r, 1000));
+          }
+        }
 
-        // Load real data if backend is available
-        const [chatsResponse, docsResponse] = await Promise.all([
-          axios.get(`${API_BASE_URL}/api/chats`),
-          axios.get(`${API_BASE_URL}/api/documents`),
-        ]);
+        if (connected) {
+          setBackendConnected(true);
+          // Load real data if backend is available
+          const [chatsResponse, docsResponse] = await Promise.all([
+            axios.get(`${API_BASE_URL}/api/chats`),
+            axios.get(`${API_BASE_URL}/api/documents`),
+          ]);
 
-        setChats(chatsResponse.data);
-        setDocuments(docsResponse.data);
-      } catch (error) {
-        console.error("Backend connection failed:", error);
-        setBackendConnected(false);
-
-        // Load demo data for offline mode
-        setChats([
-          {
-            id: 1,
-            title: "Research Paper Analysis",
-            timestamp: "2 hours ago",
-            preview: "Discussing quantum computing principles...",
-            document_id: 1,
-          },
-          {
-            id: 2,
-            title: "Legal Document Review",
-            timestamp: "1 day ago",
-            preview: "Contract clause interpretation...",
-            document_id: 2,
-          },
-          {
-            id: 3,
-            title: "Technical Manual",
-            timestamp: "3 days ago",
-            preview: "API documentation walkthrough...",
-            document_id: 3,
-          },
-        ]);
-        setDocuments([
-          {
-            id: 1,
-            name: "Quantum_Computing_Research.pdf",
-            size: "2.4 MB",
-            uploaded: "2 hours ago",
-            status: "processed",
-          },
-          {
-            id: 2,
-            name: "Legal_Contract_Draft.pdf",
-            size: "856 KB",
-            uploaded: "1 day ago",
-            status: "processed",
-          },
-          {
-            id: 3,
-            name: "API_Documentation.pdf",
-            size: "1.2 MB",
-            uploaded: "3 days ago",
-            status: "processed",
-          },
-        ]);
-      }
+          setChats(chatsResponse.data);
+          setDocuments(docsResponse.data);
+        } else {
+          throw new Error("Could not connect to backend after multiple attempts");
+        }
     };
 
     loadInitialData();
@@ -171,7 +137,12 @@ const DocuMind = () => {
       setChats((prev) => [chatResponse.data, ...prev]);
     } catch (error) {
       console.error("Error processing document:", error);
-      setBackendConnected(false);
+      // Don't set backendConnected to false if it's an HTTP error (means backend is alive)
+      if (error.message && error.message.includes("HTTP")) {
+        alert(`Backend error: ${error.detail || error.message}. Check your API key and model availability.`);
+      } else {
+        setBackendConnected(false);
+      }
 
       // Fallback to client-side processing
       const newDoc = {
