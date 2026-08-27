@@ -21,32 +21,78 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --- Virtual Environments ---
 venv/
 ENV/
 env/
-.env
+.venv
+virtualenv/
 
-# --- SQLite Databases ---
+# --- Environment Variables ---
+.env
+.env.local
+.env.*.local
+
+# --- Databases ---
 *.db
 *.sqlite3
+*.sqlite
 
-# --- Vector Indexes ---
+# --- Vector Indexes & LLM Cache ---
 backend/faiss_indexes/
+*.faiss
+*.pkl
+.cache/
+llm_cache/
+embeddings_cache/
 
 # --- Frontend (Node/React) ---
 node_modules/
 frontend/node_modules/
 frontend/dist/
 frontend/build/
+frontend/.next
 .eslintcache
 .stylelintcache
+*.tsbuildinfo
 
-# --- OS / IDE ---
-.DS_Store
+# --- IDE & Editor ---
 .vscode/
 .idea/
 *.swp
 *.swo
+*.sublime-workspace
+*.sublime-project
+*.iml
+
+# --- OS ---
+.DS_Store
 Thumbs.db
+.windows/
+
+# --- Logs ---
+logs/
+*.log
+npm-debug.log*
+
+# --- Temporary & Generated Files ---
 .gemini/
 .system_generated/
+temp/
+tmp/
+*.tmp
+.hypothesis/
+
+# --- Python Testing ---
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# --- Dependencies Lock Files (optional - uncomment if needed)
+# poetry.lock
+# yarn.lock
+# package-lock.json
