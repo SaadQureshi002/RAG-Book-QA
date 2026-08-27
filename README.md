@@ -89,5 +89,4 @@ npm install
 - **Local Storage**: Your documents are processed locally; only text chunks are sent to Google Gemini for embedding and generation.
 - **Environment Safety**: Always keep your `GOOGLE_API_KEY` in the `.env` file and never commit it to version control.
 
----
-Built with ❤️ using Google Gemini and FastAPI.
+
