@@ -28,13 +28,21 @@ pip-delete-this-directory.txt
 venv/
 ENV/
 env/
-.venv
+.venv/
 virtualenv/
 
-# --- Environment Variables ---
+# --- Environment Variables / Secrets ---
 .env
+backend/.env
+frontend/.env
 .env.local
 .env.*.local
+*.env
+
+# Allow safe example environment files
+!.env.example
+!backend/.env.example
+!frontend/.env.example
 
 # --- Databases ---
 *.db
@@ -54,7 +62,7 @@ node_modules/
 frontend/node_modules/
 frontend/dist/
 frontend/build/
-frontend/.next
+frontend/.next/
 .eslintcache
 .stylelintcache
 *.tsbuildinfo
@@ -92,7 +100,7 @@ tmp/
 htmlcov/
 .tox/
 
-# --- Dependencies Lock Files (optional - uncomment if needed)
+# --- Dependencies Lock Files ---
 # poetry.lock
 # yarn.lock
 # package-lock.json
